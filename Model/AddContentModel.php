@@ -1,9 +1,8 @@
 <?php
 require_once 'Model/Model.php';
 
-class UploadImageModel extends Model{
+class AddContentModel extends Model{
 	protected $columns = ['id','folder_id'];
-	protected $table = "image";
     private $maxFileSize = 100 * 1024 * 1024; // 100MB
 
     function uploadImage() {
@@ -19,7 +18,7 @@ class UploadImageModel extends Model{
         }
         $uploadHash = md5(microtime());
         $uploadPath = $folder.$uploadHash.'.'.$fileType;
-        $sql = "INSERT INTO `$this->table`(`path`,`hash`,`extension`) VALUES ('$folder','$uploadHash','.$fileType')";
+        $sql = "INSERT INTO `image`(`path`,`hash`,`extension`) VALUES ('$folder','$uploadHash','.$fileType')";
         $this->db->query($sql);
         $image_id = $this->db->getlastId();
         $folder_id = $_SESSION['auth_user'][1];
@@ -28,7 +27,14 @@ class UploadImageModel extends Model{
         print_r($uploadPath);
         move_uploaded_file($_FILES['image']['tmp_name'], $uploadPath);
     }
-    function checkValid($method){
-		return (isset($method) && !empty($method));
-	}
+    function addFolder() {
+        $name = $_POST['folder'];
+        $sql = "INSERT INTO `folder`(`name`) VALUES ('$name')";
+        $this->db->query($sql);
+        $folderChild_id = $this->db->getlastId();
+        $folderParent_id = $_SESSION['auth_user'][1];
+        $sql = "INSERT INTO `folderlink` VALUES($folderParent_id, $folderChild_id)";
+        $this->db->query($sql);
+
+    }
 }

@@ -6,7 +6,7 @@ class UserModel extends Model{
 	protected $table = "user";
 
     function addUser($login, $pass) {
-        $sql = "INSERT INTO `folder`(`name`) VALUES(' ')";
+        $sql = "INSERT INTO `folder`(`name`) VALUES('')";
         $this->db->query($sql);
         $folder_id = $this->db->getlastId();
         $sql = "INSERT INTO `$this->table`(`login`,`password`,`folder_id`) VALUES ('$login','$pass',$folder_id)";

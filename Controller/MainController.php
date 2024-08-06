@@ -2,7 +2,7 @@
 
 require_once 'View/View.php';
 require_once 'Model/UserModel.php';
-require_once 'Model/UploadImageModel.php';
+require_once 'Model/AddContentModel.php';
 require_once 'Model/CollectionModel.php';
 
 class MainController{
@@ -14,15 +14,24 @@ class MainController{
 		die();
 	}
 	function collectionAction(){
+		$folder_id = $_SESSION['auth_user'][1];
 		$collection = new CollectionModel();
 		$data = $collection -> getContent();
-		View::render(["page_view"=>"collection", "layout"=>"collection", "data"=>$data]);
+		View::render(["page_view"=>"collection", "layout"=>"collection", "data"=>$data, "folder_id"=>$folder_id]);
 	}
 	function uploadImageAction(){
 		if ($this->checkValid($_FILES['image'])){
-			$uploadImage = new UploadImageModel();
+			$uploadImage = new AddContentModel();
 			$uploadImage->uploadImage();
 		}
+		Route::follow("index");
+	}
+	function addFolderAction(){
+		if ($this->checkValid($_POST['folder'])){
+			$uploadImage = new AddContentModel();
+			$uploadImage->addFolder();
+		}
+		Route::follow("index");
 	}
 	function exitAction(){
 		if (isset($_SESSION['auth_user'])){
@@ -44,10 +53,9 @@ class MainController{
 		if (count($data)==0){
 			Route::follow("index");
 		}
-		else{
-			$_SESSION['auth_user'] = [$data[0]['id'],$data[0]['folder_id']];
-			Route::follow("collection");
-		}
+
+		$_SESSION['auth_user'] = [$data[0]['id'],$data[0]['folder_id']];
+		Route::follow("index");
 	}
 	function registerAction(){
 		if (!$this->checkValid($_POST['login']) || !$this->checkValid($_POST['password'])){
