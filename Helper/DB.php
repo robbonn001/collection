@@ -9,18 +9,22 @@ class DB{
             throw new RuntimeException('ошибка соединения mysqli: ' . $this->connector->connect_error);
         }
     }
-    function query($sql, $responseData = false){
+    function query($sql){
         $result = $this->connector->query($sql);
         if (!$result){
             die($this->connector->error);
         }
-        if ($responseData){
-            $data = [];
-            while($row = $result->fetch_array(MYSQLI_ASSOC)){ //MYSQLI_NUM
-                $data[] = $row;
-            }
-            return $data;
+    }
+    function querySelect($sql) {
+        $result = $this->connector->query($sql);
+        if (!$result){
+            die($this->connector->error);
         }
+        $data = [];
+        while($row = $result->fetch_array(MYSQLI_ASSOC)){ //MYSQLI_NUM
+            $data[] = $row;
+        }
+        return $data;
     }
     function getlastId(){
         return $this->connector->insert_id;

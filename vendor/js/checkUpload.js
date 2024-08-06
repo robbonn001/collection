@@ -13,7 +13,9 @@ imageInput.addEventListener("change", function(){
     if (this.value){
         uploadFlag = true;
     }
-    uploadFlag = false;
+    else{
+        uploadFlag = false;
+    }
 });
 
 uploadBtn.addEventListener("click", (evt)=>{

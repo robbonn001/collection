@@ -16,6 +16,16 @@ a{
     display: block;
     color: #000;
     text-decoration: none;
+    position: relative;
+}
+a span{
+    position: absolute;
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+    font-size: 20px;
+    left: 33%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
 }
 
 .box {

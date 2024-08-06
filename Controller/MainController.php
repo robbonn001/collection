@@ -14,9 +14,9 @@ class MainController{
 		die();
 	}
 	function collectionAction(){
-		$folder_id = $_SESSION['auth_user'][1];
 		$collection = new CollectionModel();
 		$data = $collection -> getContent();
+		$folder_id = $collection -> getParent();
 		View::render(["page_view"=>"collection", "layout"=>"collection", "data"=>$data, "folder_id"=>$folder_id]);
 	}
 	function uploadImageAction(){

@@ -29,7 +29,7 @@ class Model{
 		$sql .= $where;
 		print_r($sql);
 		//Debug::dd($sql);
-		return $this->db->query($sql, true);
+		return $this->db->querySelect($sql);
 	}
 	function get(array $params = null){
 		if (is_array($params) && !empty($params)){
